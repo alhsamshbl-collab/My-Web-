@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'VIP27-InfinityFree-Deployment.zip'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -41,7 +42,7 @@ jobs:
       - name: Run smoke tests
         run: php deploy-root/tests/smoke.php
 
-      - name: Deploy over explicit FTPS
+      - name: Deploy all extracted project files over explicit FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -52,10 +53,3 @@ jobs:
           security: strict
           local-dir: deploy-root/
           server-dir: /htdocs/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.env
-            **/public/uploads/**
-            **/storage/logs/**
-            **/storage/cache/**
