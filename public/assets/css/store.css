@@ -16,3 +16,13 @@
 .hero-slide .hero-text small,.hero-slide .hero-text h1,.hero-slide .hero-text p,.hero-slide .hero-text a{text-align:right!important;margin-inline-start:0!important;margin-inline-end:0!important}
 .hero .prev,.hero .next,.hero button.prev,.hero button.next{display:none!important;visibility:hidden!important;pointer-events:none!important}
 @media(max-width:700px){.hero-slide{padding:16px!important;background-position:center!important}.hero-slide .hero-text{right:6%!important;left:auto!important;width:84%!important;max-width:84%!important;top:50%!important;transform:translateY(-50%)!important}.hero-slide .hero-text h1{font-size:clamp(19px,5.4vw,26px)!important;line-height:1.55!important}.hero-slide .hero-text p{font-size:13px!important;line-height:1.8!important}.hero-slide .hero-text .gold{align-self:flex-start!important}}
+
+
+/* v51: force the hero artwork and copy to the right; remove only hero navigation arrows */
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero-slides{position:absolute;inset:0}
+.hero-slide{position:absolute;inset:0;display:flex;justify-content:flex-start;align-items:center;background-position:center!important;background-size:cover!important}
+.hero-slide .hero-text{position:absolute!important;right:6%!important;left:auto!important;top:50%!important;transform:translateY(-50%)!important;width:min(560px,82%)!important;max-width:82%!important;margin:0!important;text-align:right!important;direction:rtl!important;align-items:flex-start!important}
+.hero-slide .hero-text>*{text-align:right!important}
+.hero .prev,.hero .next,.hero button.prev,.hero button.next,.hero [aria-label="السابق"],.hero [aria-label="التالي"]{display:none!important}
+@media(max-width:700px){.hero{height:250px!important}.hero-slide{padding:14px!important}.hero-slide .hero-text{right:5%!important;left:auto!important;width:88%!important;max-width:88%!important}.hero-slide .hero-text h1{font-size:clamp(20px,5.4vw,27px)!important;line-height:1.5}.hero-slide .hero-text p{font-size:13px!important;line-height:1.8}}
