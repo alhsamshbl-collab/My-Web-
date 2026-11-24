@@ -1,0 +1,3 @@
+CREATE TABLE categories(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(150) NOT NULL,image VARCHAR(500),sort_order INT DEFAULT 0,is_active TINYINT DEFAULT 1) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE products(id INT AUTO_INCREMENT PRIMARY KEY,category_id INT,name VARCHAR(200) NOT NULL,description TEXT,price DECIMAL(10,2) NOT NULL,image_url VARCHAR(600),stock INT DEFAULT 0,is_active TINYINT DEFAULT 1,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,INDEX(category_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO categories(name,sort_order) VALUES('الشيش',1),('المعدات',2),('الدخان',3),('الفحم',4),('الإكسسوارات',5),('مستلزمات الشيش',6);
