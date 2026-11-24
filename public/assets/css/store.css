@@ -58,3 +58,13 @@
 #categoryTrack .cat:not(.active) span{box-shadow:none}
 .carousel>button{z-index:8;pointer-events:auto;cursor:pointer}
 @media(max-width:700px){#categoryTrack .cat{flex-basis:105px;min-width:105px}}
+
+/* v57: fixed center reticle; category images slide underneath it */
+.carousel{position:relative}
+#categoryTrack{justify-content:flex-start!important;gap:24px!important;padding-inline:calc(50% - 55px)!important;scroll-padding-inline:calc(50% - 55px)!important;scroll-snap-type:x mandatory!important;scroll-behavior:smooth;overflow-x:auto;direction:ltr}
+#categoryTrack .cat{direction:rtl;flex:0 0 110px!important;width:110px!important;min-width:110px!important;scroll-snap-align:center!important;scroll-snap-stop:always}
+#categoryTrack .cat.active{transform:none!important;filter:none!important;opacity:1!important}
+#categoryTrack .cat.active span{border:1px solid #a77b32!important;box-shadow:none!important}
+#categoryTrack .cat.active b{color:#f4ce68;text-shadow:0 0 8px rgba(233,185,76,.55)}
+.category-focus{position:absolute;z-index:6;pointer-events:none;left:50%;top:15px;width:110px;height:110px;transform:translateX(-50%);border:3px solid #f4ce68;border-radius:50%;box-shadow:0 0 12px #e9b94c,0 0 30px rgba(233,185,76,.75),inset 0 0 14px rgba(233,185,76,.2)}
+@media(max-width:700px){#categoryTrack{padding-inline:calc(50% - 37.5px)!important;scroll-padding-inline:calc(50% - 37.5px)!important;gap:24px!important}#categoryTrack .cat{flex-basis:75px!important;width:75px!important;min-width:75px!important}#categoryTrack .cat span{width:75px!important;height:75px!important}.category-focus{top:15px;width:75px;height:75px;border-width:3px}}
