@@ -1,0 +1,1 @@
+<?php require __DIR__.'/includes/bootstrap.php';unset($_SESSION['customer_id'],$_SESSION['customer_name']);go('index.php');
