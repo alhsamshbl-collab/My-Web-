@@ -1,10 +1,11 @@
--- نفّذ هذا الملف مرة واحدة على قاعدة المتجر القديمة التي تحتوي جدول categories/products.
--- خذ نسخة احتياطية من قاعدة البيانات قبل التنفيذ.
+-- شغّل مرة واحدة فقط على قاعدة المشروع القديمة بعد أخذ نسخة احتياطية.
+-- يدعم MySQL/MariaDB مع ADD COLUMN IF NOT EXISTS.
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS slug VARCHAR(180) NULL;
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS image VARCHAR(600) NULL;
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS sort_order INT NOT NULL DEFAULT 0;
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS is_active TINYINT(1) NOT NULL DEFAULT 1;
 UPDATE categories SET slug=CONCAT('category-',id) WHERE slug IS NULL OR slug='';
+-- إذا كان هذا الفهرس موجوداً مسبقاً فتجاوز هذا السطر بعد التحقق منه.
 CREATE UNIQUE INDEX uq_categories_slug ON categories(slug);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT NULL;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url VARCHAR(600) NULL;
@@ -16,4 +17,8 @@ CREATE TABLE IF NOT EXISTS banners(id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,ti
 CREATE TABLE IF NOT EXISTS customers(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(180) NOT NULL,phone VARCHAR(40) NOT NULL,email VARCHAR(190) NULL,password_hash VARCHAR(255) NULL,address TEXT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,UNIQUE KEY uq_customer_phone(phone),UNIQUE KEY uq_customer_email(email)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS orders(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,order_number VARCHAR(32) NOT NULL UNIQUE,customer_id BIGINT UNSIGNED NULL,customer_name VARCHAR(180) NOT NULL,phone VARCHAR(40) NOT NULL,city VARCHAR(120) NOT NULL,address TEXT NOT NULL,notes TEXT NULL,subtotal DECIMAL(12,2) NOT NULL,shipping DECIMAL(12,2) NOT NULL DEFAULT 0,total DECIMAL(12,2) NOT NULL,status ENUM('new','confirmed','processing','shipped','completed','cancelled') NOT NULL DEFAULT 'new',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,INDEX idx_orders_status(status)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS order_items(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,order_id BIGINT UNSIGNED NOT NULL,product_id INT UNSIGNED NULL,product_name VARCHAR(200) NOT NULL,unit_price DECIMAL(12,2) NOT NULL,quantity INT NOT NULL,line_total DECIMAL(12,2) NOT NULL,CONSTRAINT fk_item_order FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-CREATE TABLE IF NOT EXISTS admins(id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,username VARCHAR(80) NOT NULL UNIQUE,password_hash VARCHAR(255) NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS admins(id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,full_name VARCHAR(180) NOT NULL DEFAULT '',email VARCHAR(190) NULL,username VARCHAR(190) NULL UNIQUE,password_hash VARCHAR(255) NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE admins ADD COLUMN IF NOT EXISTS full_name VARCHAR(180) NOT NULL DEFAULT '';
+ALTER TABLE admins ADD COLUMN IF NOT EXISTS email VARCHAR(190) NULL;
+UPDATE admins SET full_name=username WHERE full_name='';
+-- أضف البريد للمديرين القدامى يدوياً قبل جعل البريد إلزامياً؛ المدير الجديد يُنشأ بالبريد.
