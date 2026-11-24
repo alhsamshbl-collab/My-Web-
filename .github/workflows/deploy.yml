@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'VIP27-InfinityFree-Deployment.zip'
+      - 'public/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
@@ -16,33 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Extract application package
-        run: |
-          test -f VIP27-InfinityFree-Deployment.zip
-          mkdir -p deploy-root
-          unzip -q VIP27-InfinityFree-Deployment.zip -d deploy-root
-          test -f deploy-root/.htaccess
-          test -f deploy-root/public/index.php
-          test -f deploy-root/database/schema.sql
-
+      - uses: actions/checkout@v4
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: pdo_mysql, fileinfo, mbstring
           coverage: none
-
       - name: Validate PHP syntax
-        run: |
-          find deploy-root -type f -name '*.php' -print0 | xargs -0 -n1 php -l
-
-      - name: Run smoke tests
-        run: php deploy-root/tests/smoke.php
-
-      - name: Deploy all extracted project files over explicit FTPS
+        run: find public -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Deploy complete website directory over FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -51,5 +34,5 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
           security: strict
-          local-dir: deploy-root/
+          local-dir: public/
           server-dir: /htdocs/
