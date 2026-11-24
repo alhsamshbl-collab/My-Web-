@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 session_start();
-$pdo=new PDO('mysql:host='.getenv('DB_HOST').';dbname='.getenv('DB_NAME').';charset=utf8mb4',getenv('DB_USER'),getenv('DB_PASS'),[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
+require __DIR__.'/config.php';
+$pdo=store_db();
 $cats=$pdo->query("SELECT id,name,image FROM categories WHERE is_active=1 ORDER BY sort_order,id")->fetchAll();
 $products=$pdo->query("SELECT id,name,price,image_url FROM products WHERE is_active=1 ORDER BY id DESC LIMIT 24")->fetchAll();
 function h($v){return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}
