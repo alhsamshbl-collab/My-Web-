@@ -49,3 +49,12 @@
 .cat{cursor:pointer;scroll-snap-align:center;flex-shrink:0;position:relative;z-index:1;pointer-events:auto}
 .carousel>button{position:relative;z-index:4;flex:0 0 42px;pointer-events:auto;touch-action:manipulation;cursor:pointer}
 @media(max-width:700px){.hero{height:250px!important}.hero-slide .hero-art{object-position:center}.settings-thumb{width:112px!important;height:76px!important}.hero-thumb{width:150px!important;height:76px!important}}
+
+/* v56: category selector must travel with the centered category */
+#categoryTrack{position:relative;justify-content:flex-start;scroll-padding-inline:50%;scroll-snap-type:x mandatory;scroll-behavior:smooth;overflow-x:auto;overscroll-behavior-inline:contain}
+#categoryTrack .cat{scroll-snap-align:center;scroll-snap-stop:always;flex:0 0 110px;min-width:110px;cursor:pointer;touch-action:pan-x;user-select:none}
+#categoryTrack .cat.active{opacity:1;filter:drop-shadow(0 0 15px rgba(240,190,70,.95));transform:scale(1.12)}
+#categoryTrack .cat.active span{border:3px solid #f4ce68;box-shadow:0 0 12px #e9b94c,0 0 30px rgba(233,185,76,.7)}
+#categoryTrack .cat:not(.active) span{box-shadow:none}
+.carousel>button{z-index:8;pointer-events:auto;cursor:pointer}
+@media(max-width:700px){#categoryTrack .cat{flex-basis:105px;min-width:105px}}

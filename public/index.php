@@ -2,7 +2,7 @@
 require __DIR__.'/includes/bootstrap.php';
 $cats=db()->query("SELECT id,name,image FROM categories WHERE is_active=1 ORDER BY sort_order,id")->fetchAll();
 $banners=db()->query("SELECT title,subtitle,image_url,link_url FROM banners WHERE is_active=1 ORDER BY sort_order,id")->fetchAll();
-$storeName=setting('store_name','الفخامة للشيشة والتبغ');$storeDesc=setting('store_description','اكتشف تجربة فاخرة لا مثيل لها');$logo=setting('store_logo');$hero=setting('hero_image');
+$storedStoreName=setting('store_name');$storeName=(!$storedStoreName||$storedStoreName==='الفخامة للشيشة والتبغ')?'معسلات VIP 27':$storedStoreName;$storeDesc=setting('store_description','اكتشف تجربة فاخرة لا مثيل لها');$logo=setting('store_logo');$hero=setting('hero_image');
 // Prefer the image saved in Store Settings over the first rotating banner image.
 if($hero && !empty($banners)) $banners[0]['image_url']=$hero;
 if(!$banners)$banners=[['title'=>$storeName,'subtitle'=>$storeDesc,'image_url'=>$hero?:'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1800&q=85','link_url'=>'#products']];
